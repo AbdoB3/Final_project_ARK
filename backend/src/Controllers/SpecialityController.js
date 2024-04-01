@@ -24,10 +24,10 @@ async function CreateSpeciality(req, res) {
 
 // Controller for updating a speciality
 async function UpdateSpeciality(req, res) {
-    try {
-			let Id= req.params.id;
+     try {     
+           let {id}= req.params;
 			const { nom , description }= req.body;
-        const updatedSpeciality = await Speciality.findByIdAndUpdate(Id, {nom : nom},{description: description}, { new: true });
+        const updatedSpeciality = await Speciality.findByIdAndUpdate(id ,{ nom , description}, { new: true });
         if (!updatedSpeciality) throw new Error('Speciality not found');
         res.json(updatedSpeciality);
     } catch (err) {
@@ -37,7 +37,7 @@ async function UpdateSpeciality(req, res) {
 
 async function DeleteSpeciality(req, res) {
     try {
-			const {id}= req.params;
+			let {id}= req.params;
         const deletedSpeciality = await Speciality.findByIdAndDelete(id);
         if (!deletedSpeciality) throw new Error('Speciality not found');
         res.json({ message: 'Speciality deleted' });

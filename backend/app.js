@@ -6,7 +6,16 @@ const port = process.env.PORT;
 const uri = process.env.MONGODB_URI;
 
 const app = express();
+app.use(express.json());
 
+const AdminRoutes = require("./src/Routes/AdminRoutes");
+app.use('/admin', AdminRoutes);
+
+const SpecialityRoutes = require("./src/Routes/SpecialityRoutes");
+app.use('/speciality', SpecialityRoutes);
+    
+
+    
 //connection a la base de donne
 mongoose
     .connect(uri)
@@ -17,8 +26,6 @@ mongoose
     .catch((error) => {
         console.log('Error connecting to database: ', error)
     });
-
-
 
 app.listen(port, () => {
     console.log(`listening to port ${port}`)

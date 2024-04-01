@@ -23,21 +23,24 @@ const AdminById = async (req, res,next) => {
 
 // CREATE new admin
 async function CreateAdmin (req, res) {
-	try{
-		const { nom , prenom , identifiant, mot_de_passe}=req.body;
-    const admin = new Admin({nom, prenom, identifiant, mot_de_passe});
+	
+		let { nom , prenom , identifiant, mot_de_passe}=req.body;
+    let admin = new Admin({nom, prenom, identifiant, mot_de_passe});
+  try{  
         const newAdmin = await admin.save();
         res.status(201).json(newAdmin);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+       // res.status(400).json({ message: err.message });
+       console.error('Error:', err.message);
     }
 };
 
 // UPDATE admin by ID
  async function UpdateAdmin (req, res) {
-   try { 
-		const { id } = req.params;
-		 const { nom , prenom, identifiant, mot_de_passe }= req.body;
+   try {
+		let { id } = req.params;
+        let { nom , prenom, identifiant, mot_de_passe }= req.body;
+        
         const updatedAdmin = await Admin.findByIdAndUpdate(id, { nom:nom }, {prenom: prenom }, {identifiant: identifiant} , {mot_de_passe: mot_de_passe}, {new:true});
         res.json(updatedAdmin);
     } catch (err) {
@@ -48,13 +51,12 @@ async function CreateAdmin (req, res) {
 // DELETE admin by ID
  async function DeleteAdmin (req, res) {
     try {
-			let Id = req.params.id;
-        const deleted = await res.findByIdAndDelete(Id);
-				await deleted.save();
+        const deleted = await Admin.findByIdAndDelete(req.params.id);
+			
         res.json({ message: 'Admin deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-module.exports ={ GetAllAdmins,AdminById,  CreateAdmin, UpdateAdmin, DeleteAdmin}
+module.exports ={ GetAllAdmins, AdminById,  CreateAdmin, UpdateAdmin, DeleteAdmin} 

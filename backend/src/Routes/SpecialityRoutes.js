@@ -3,12 +3,13 @@ const router = express.Router();
 const {GetAllSpecialities, 	CreateSpeciality, UpdateSpeciality, DeleteSpeciality  } = require("../Controllers/SpecialityController");
 
 
-router.get('/specialities', GetAllSpecialities);
 
-router.post('/specialities', CreateSpeciality);
+router.get('', GetAllSpecialities);
 
-router.put('/specialities/:id', UpdateSpeciality);
+router.post('', CreateSpeciality);
 
-router.delete('/specialities/:id', DeleteSpeciality);
+router.put('/:id', UpdateSpeciality);
+
+router.delete('/:id', DeleteSpeciality);
 
 module.exports = router;
