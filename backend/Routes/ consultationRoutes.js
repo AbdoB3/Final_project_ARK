@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const consultationController = require('../controllers/consultationController');
+const consultationController = require('../Controllers/consultationController');
 
 // Route to create a new consultation
 router.post('/consultations', consultationController.createConsultation);

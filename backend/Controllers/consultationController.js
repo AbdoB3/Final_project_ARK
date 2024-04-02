@@ -1,4 +1,4 @@
-const Consultation = require('../models/consultation');
+const Consultation = require('../Models/consultation');
 
 // Controller function to create a new consultation
 async function createConsultation(req, res) {
