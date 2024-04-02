@@ -10,6 +10,16 @@ async function GetAllSpecialities(req, res) {
     }
 }
 
+async function GetSpecialityByName(req,res) {
+   try{
+    let {nom}= req.params;
+    const speciality = await Speciality.find({nom});
+    res.json(speciality);
+   } catch (err) {
+    res.status(400).json({ message: err.message });
+}
+}
+
 // Controller for creating a new speciality
 async function CreateSpeciality(req, res) {
     try {
@@ -48,6 +58,7 @@ async function DeleteSpeciality(req, res) {
 
 module.exports = {
     GetAllSpecialities,
+    GetSpecialityByName,
     CreateSpeciality,
     UpdateSpeciality,
     DeleteSpeciality
