@@ -25,7 +25,8 @@ mongoose
     });
 
 
-
+    const postPatient = require('./routes/patientRoutes')
+    app.use('/patient',postPatient)
     
 
 
