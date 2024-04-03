@@ -1,4 +1,5 @@
 const Admin = require('../Models/AdminModel');
+const bcrypt = require('bcrypt');
 
 // GET all admins
  async function GetAllAdmins (req, res) {
@@ -25,9 +26,10 @@ const AdminById = async (req, res,next) => {
 async function CreateAdmin (req, res) {
 	
 		let { nom , prenom , identifiant, mot_de_passe}=req.body;
-    let admin = new Admin({nom, prenom, identifiant, mot_de_passe});
-  try{  
-        const newAdmin = await admin.save();
+   try{ 
+       const hashedpassword = await bcrypt.hash(mot_de_passe,10);
+           let admin = new Admin({nom, prenom, identifiant, mot_de_passe: hashedpassword});
+   const newAdmin = await admin.save();
         res.status(201).json(newAdmin);
     } catch (err) {
        // res.status(400).json({ message: err.message });
