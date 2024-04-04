@@ -1,6 +1,17 @@
 const Consultation = require('../Models/consultation');
 
-// Controller function to create a new consultation
+
+
+async function getAllConsultations(req, res) {
+    try {
+        const consultations = await Consultation.find();
+        res.json({ success: true, data: consultations });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+}
+
+// Create a new consultation
 async function createConsultation(req, res) {
     try {
         const { doctor_id, date_consultation, motif_consultation, prix } = req.body;
@@ -12,7 +23,7 @@ async function createConsultation(req, res) {
     }
 }
 
-// Controller function to find a consultation by ID
+// Find a consultation by ID
 async function findConsultationById(req, res) {
     try {
         const { id } = req.params;
@@ -26,14 +37,11 @@ async function findConsultationById(req, res) {
     }
 }
 
-// Controller function to find consultations by price or all consultations if price is not provided
+// Find consultations by price or all consultations if price is not provided
 async function findConsultationsByPrice(req, res) {
     try {
         const { price } = req.query;
-        let query = {};
-        if (price) {
-            query = { prix: price };
-        }
+        const query = price ? { prix: price } : {};
         const consultations = await Consultation.find(query);
         res.json({ success: true, data: consultations });
     } catch (err) {
@@ -41,7 +49,7 @@ async function findConsultationsByPrice(req, res) {
     }
 }
 
-// Controller function to update a consultation by ID
+// Update a consultation by ID
 async function updateConsultation(req, res) {
     try {
         const { id } = req.params;
@@ -57,7 +65,7 @@ async function updateConsultation(req, res) {
     }
 }
 
-// Controller function to delete a consultation by ID
+// Delete a consultation by ID
 async function deleteConsultation(req, res) {
     try {
         const { id } = req.params;
@@ -73,6 +81,7 @@ async function deleteConsultation(req, res) {
 }
 
 module.exports = {
+    getAllConsultations,
     createConsultation,
     findConsultationById,
     findConsultationsByPrice,

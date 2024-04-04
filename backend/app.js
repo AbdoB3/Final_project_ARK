@@ -31,10 +31,10 @@ mongoose
     });
 
 
-const postPatient = require('./src/Routes//patientRoutes')
+const postPatient = require('./src/Routes/patientRoutes')
     app.use('/patient',postPatient)
     
-app.use('./consultation',consultationRoutes);
+app.use('/consultation',consultationRoutes);
 
 app.listen(port, () => {
     console.log(`listening to port ${port}`)
