@@ -40,6 +40,7 @@ const createDoctor = async(req, res)=>{
         res.status(201).send(saveDoctor)
     }catch(error){
         res.status(400).send(error.message)
+        
     }
 }
 
