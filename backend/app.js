@@ -2,8 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const doctorRoutes = require('./src/Routes/doctorRoute');
-
-
+const consultationRoutes=require('./src/Routes/ consultationRoutes');
 const app = express();
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
@@ -35,7 +34,7 @@ mongoose
 const postPatient = require('./src/Routes//patientRoutes')
     app.use('/patient',postPatient)
     
-
+app.use('./consultation',consultationRoutes);
 
 app.listen(port, () => {
     console.log(`listening to port ${port}`)
