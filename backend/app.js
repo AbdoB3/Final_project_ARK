@@ -7,7 +7,7 @@ const doctorRoutes = require('./src/Routes/doctorRoute');
 const app = express();
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
-const port = process.env.PORT;
+ port = process.env.PORT;
 const uri = process.env.MONGODB_URI;
 
 app.use('/doctors', doctorRoutes);
