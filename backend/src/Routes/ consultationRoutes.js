@@ -11,6 +11,7 @@ router.post('/', consultationController.createConsultation);
 // Route to find a consultation by ID
 router.get('/:id', consultationController.findConsultationById);
 
+
 // Route to update a consultation by ID
 router.put('/:id', consultationController.updateConsultation);
 
@@ -18,3 +19,4 @@ router.put('/:id', consultationController.updateConsultation);
 router.delete('/:id', consultationController.deleteConsultation);
 
 module.exports = router;
+
