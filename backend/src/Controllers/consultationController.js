@@ -1,15 +1,16 @@
 const Consultation = require('../Models/consultation');
 
 
-
 async function getAllConsultations(req, res) {
     try {
-        const consultations = await Consultation.find();
-        res.json(  consultations );
+        const consultations = await Consultation.find().populate('doctor_id', 'firstname lastname email sexe feePer');
+        res.json(consultations);
     } catch (err) {
-        res.status(500).json(  err.message );
+        res.status(500).json({ error: err.message });
     }
 }
+
+
 
 // Create a new consultation
 async function createConsultation(req, res) {
@@ -17,7 +18,7 @@ async function createConsultation(req, res) {
         const { doctor_id, date_consultation, motif_consultation} = req.body;
         const consultation = await Consultation.create({ doctor_id, date_consultation, motif_consultation});
         const consultations = await Consultation.find();
-        res.status(201).json({  message: "Consultation added successfully", consultations });
+        res.status(201).json( "Consultation added successfully");
     } catch (err) {
         res.status(500).json(  err.message );
     }
@@ -29,7 +30,7 @@ async function findConsultationById(req, res) {
         const { id } = req.params;
         const consultation = await Consultation.findById(id);
         if (!consultation) {
-            return res.status(404).json({ error: 'Consultation not found' });
+            return res.status(404).json( 'Consultation not found' );
         }
         res.json( consultation );
     } catch (err) {
@@ -47,10 +48,10 @@ async function updateConsultation(req, res) {
         const { doctor_id, date_consultation, motif_consultation} = req.body;
         const consultation = await Consultation.findByIdAndUpdate(id, { doctor_id, date_consultation, motif_consultation}, { new: true });
         if (!consultation) {
-            return res.status(404).json({ error: 'Consultation not found' });
+            return res.status(404).json('Consultation not found' );
         }
         const consultations = await Consultation.find();
-        res.json({  message: "Consultation updated successfully",  consultations });
+        res.json( "Consultation updated successfully");
     } catch (err) {
         res.status(500).json(  err.message );
     }
@@ -62,20 +63,12 @@ async function deleteConsultation(req, res) {
         const { id } = req.params;
         const consultation = await Consultation.findByIdAndDelete(id);
         if (!consultation) {
-            return res.status(404).json({ error: 'Consultation not found' });
+            return res.status(404).json('Consultation not found' );
         }
         const consultations = await Consultation.find();
-        res.json({ message: "Consultation deleted successfully",  consultations });
+        res.json( "Consultation deleted successfully");
     } catch (err) {
         res.status(500).json(  err.message );
-    }
-}
-async function getAllConsultationsdocors(req, res) {
-    try {
-        const consultations = await Consultation.find().populate('doctor_id');
-        res.json(consultations);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
     }
 }
 
@@ -84,5 +77,5 @@ module.exports = {
     createConsultation,
     findConsultationById,
     updateConsultation,
-    deleteConsultation, getAllConsultationsdocors
+    deleteConsultation
 };
