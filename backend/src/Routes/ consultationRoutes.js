@@ -19,3 +19,4 @@ router.put('/:id', consultationController.updateConsultation);
 router.delete('/:id', consultationController.deleteConsultation);
 
 module.exports = router;
+
