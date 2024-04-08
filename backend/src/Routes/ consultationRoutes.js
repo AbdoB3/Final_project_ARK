@@ -11,9 +11,6 @@ router.post('/', consultationController.createConsultation);
 // Route to find a consultation by ID
 router.get('/:id', consultationController.findConsultationById);
 
-// Route to find consultations by price or all consultations if price is not provided
-router.get('/search', consultationController.findConsultationsByPrice);
-
 // Route to update a consultation by ID
 router.put('/:id', consultationController.updateConsultation);
 
