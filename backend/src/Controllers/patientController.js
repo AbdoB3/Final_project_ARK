@@ -22,8 +22,8 @@ const getPatientById = async (req, res, next) => {
 };
 
 const createPatient = async (req, res) => {
-    let { firstName, lastName, adresse, sexe, date_nais, password } = req.body;
-    let patient = new Patient({ firstName, lastName, adresse, sexe, date_nais, password })
+    let { firstName, lastName, adresse, sexe, location, date_nais, email , password } = req.body;
+    let patient = new Patient({ firstName, location, lastName, adresse, sexe, email, date_nais, password })
     try {
         let savedPatient = await patient.save()
         res.send(savedPatient)
@@ -33,9 +33,9 @@ const createPatient = async (req, res) => {
 const updatePatient = async (req, res, next) => {
     const id = req.params.id;
 
-    let { firstName, lastName, adresse, sexe, date_nais, password } = req.body;
+    let { firstName, lastName, adresse,email, location, sexe, date_nais, password } = req.body;
     try {
-        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, adresse, sexe, date_nais, password })
+        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, email, location, lastName, adresse, sexe, date_nais, password })
         if (!updatedPatient) {
             return res.status(404).json('post not found')
         }
