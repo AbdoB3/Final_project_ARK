@@ -31,7 +31,7 @@ mongoose
     });
 
 
-const postPatient = require('./src/Routes/patientRoutes')
+const postPatient = require('./src/Routes//patientRoutes')
     app.use('/patient',postPatient)
     
 app.use('/consultation',consultationRoutes);
