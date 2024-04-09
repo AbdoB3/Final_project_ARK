@@ -5,7 +5,7 @@ async function getAllConsultations(req, res) {
         const consultation= await Consultation.find();
         res.status(200).send(consultation);
     } catch (err) {
-        res.status(500).json({ error: erressage });
+        res.status(500).json(err. erressage );
     }
 }
 
