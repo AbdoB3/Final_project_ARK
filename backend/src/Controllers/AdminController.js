@@ -38,12 +38,12 @@ async function CreateAdmin(req, res) {
 };
 
 // UPDATE admin by ID
-async function UpdateAdmin(req, res) {
-    try {
-        let { id } = req.params;
-        let { nom, prenom, identifiant, mot_de_passe } = req.body;
-
-        const updatedAdmin = await Admin.findByIdAndUpdate(id, { nom: nom }, { prenom: prenom }, { identifiant: identifiant }, { mot_de_passe: mot_de_passe }, { new: true });
+ async function UpdateAdmin (req, res) {
+   try {
+		let { id } = req.params;
+        let { nom , prenom, identifiant, mot_de_passe }= req.body;
+        
+        const updatedAdmin = await Admin.findByIdAndUpdate(id, { nom, prenom , identifiant, mot_de_passe} , {new:true});
         res.json(updatedAdmin);
     } catch (err) {
         res.status(400).json({ message: err.message });

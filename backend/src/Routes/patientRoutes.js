@@ -5,7 +5,6 @@ const router = express.Router();
 const { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient } = require('../controllers/patientController')
 const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
 
-
 router.post('/login', loginPatient)
 router.post('/', createPatient)
 
