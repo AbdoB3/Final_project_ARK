@@ -1,5 +1,6 @@
 const Consultation = require('../Models/consultation');
 
+
 async function getAllConsultations(req, res) {
     try{
         const consultation= await Consultation.find();

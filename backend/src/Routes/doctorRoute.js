@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const upload = require('../Middlewares/upload'); // Middleware Multer 
 
-
 const {
     getAllDoctors,
     getDoctorById,
@@ -11,11 +10,18 @@ const {
     deleteDoctorById,
     findDoctorsBySpeciality } = require ('../Controllers/doctorController')
 
-    router.get('/', getAllDoctors);
-    router.get('/:id',getDoctorById);
+const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
+
     router.post('/', createDoctor);
-    router.put('/:id',updateDoctorById);
-    router.delete('/:id', deleteDoctorById);
+
+    router.use(authenticateUser)
+
+    router.get('/', authorize(['admin']),getAllDoctors);
+    router.get('/:id',getDoctorById);
+   
+    router.put('/:id',authorize(['admin','doctor']),updateDoctorById);
+    router.delete('/:id', authorize(['admin']),deleteDoctorById);
+    
     router.get('/speciality/:speciality', findDoctorsBySpeciality);
 
     module.exports = router;
