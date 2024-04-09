@@ -13,8 +13,8 @@ const {
 
     router.get('/', getAllDoctors);
     router.get('/:id',getDoctorById);
-    router.post('/',upload.single('image'), createDoctor);
-    router.put('/:id',upload.single('image'),updateDoctorById);
+    router.post('/', createDoctor);
+    router.put('/:id',updateDoctorById);
     router.delete('/:id', deleteDoctorById);
     router.get('/speciality/:speciality', findDoctorsBySpeciality);
 
