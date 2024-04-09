@@ -34,22 +34,7 @@ async function findConsultationById(req, res) {
     }
 }
 
-// Controller function to find consultations by price or all consultations if price is not provided
-async function findConsultationsByPrice(req, res) {
-    try {
-        const { price } = req.query;
-        let query = {};
-        if (price) {
-            query = { prix: price };
-        }
-        const consultations = await Consultation.find(query);
-        res.json({ success: true, data: consultations });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
-}
-
-// Controller function to update a consultation by ID
+// Update a consultation by ID
 async function updateConsultation(req, res) {
     try {
         const { id } = req.params;
