@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const consultationController = require('../Controllers/consultationController');
 
+// Route to get all consultations
+router.get('/', consultationController.getAllConsultations);
+
 // Route to get all consultations  with informations doctor
 router.get('/', consultationController.getAllConsultations);
 
