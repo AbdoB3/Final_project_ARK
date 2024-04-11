@@ -10,7 +10,7 @@ const {
     deleteDoctorById,
     findDoctorsBySpeciality } = require ('../Controllers/doctorController')
 
-const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
+const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
     router.post('/', createDoctor);
 

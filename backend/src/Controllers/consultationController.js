@@ -1,23 +1,23 @@
+const mongoose = require('mongoose');
 const Consultation = require('../Models/consultation');
 
-
 async function getAllConsultations(req, res) {
-    try{
-        const consultation= await Consultation.find();
-        res.status(200).send(consultation);
+    try {
+        const consultations = await Consultation.find();
+        res.status(200).json(consultations);
     } catch (err) {
-        res.status(500).json(err. erressage );
+        res.status(500).json({ error: err.message });
     }
 }
 
 // Create a new consultation
 async function createConsultation(req, res) {
     try {
-        const { doctor_id, patient_id, date_consultation, motif_consultation} = req.body;
-        const consultation = await Consultation.create({ doctor_id, patient_id, date_consultation, motif_consultation});
+        const { doctor_id, patient_id, date_consultation, motif_consultation, consultation_type } = req.body;
+        const consultation = await Consultation.create({ doctor_id, patient_id, date_consultation, motif_consultation, consultation_type });
         res.status(201).json("Consultation added successfully");
     } catch (err) {
-        res.status(500).json(err.message);
+        res.status(500).json({ error: err.message });
     }
 }
 
@@ -31,7 +31,7 @@ async function findConsultationById(req, res) {
         }
         res.json(consultation);
     } catch (err) {
-        res.status(500).json(err.message);
+        res.status(500).json({ error: err.message });
     }
 }
 
@@ -39,14 +39,14 @@ async function findConsultationById(req, res) {
 async function updateConsultation(req, res) {
     try {
         const { id } = req.params;
-        const { doctor_id, patient_id, date_consultation, motif_consultation} = req.body;
-        const consultation = await Consultation.findByIdAndUpdate(id, { doctor_id, patient_id, date_consultation, motif_consultation}, { new: true });
+        const { doctor_id, patient_id, date_consultation, motif_consultation, consultation_type } = req.body;
+        const consultation = await Consultation.findByIdAndUpdate(id, { doctor_id, patient_id, date_consultation, motif_consultation, consultation_type }, { new: true });
         if (!consultation) {
             return res.status(404).json('Consultation not found');
         }
         res.json("Consultation updated successfully");
     } catch (err) {
-        res.status(500).json(err.message);
+        res.status(500).json({ error: err.message });
     }
 }
 
@@ -60,7 +60,7 @@ async function deleteConsultation(req, res) {
         }
         res.json("Consultation deleted successfully");
     } catch (err) {
-        res.status(500).json(err.message);
+        res.status(500).json({ error: err.message });
     }
 }
 
