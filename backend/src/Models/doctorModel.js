@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const DoctorSchema = new mongoose.Schema({
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
+    firstname: { type: String, required: false },
+    lastname: { type: String, required: false },
     email :{type: String, required: true },
     password :{type: String},
-    phone :{type: String, required: true },
+    phone :{type: String, required: false },
     sexe: { type: String, enum: ['homme', 'femme']},
     address: {city: String,state: String,country: String},
     speciality: { type: String },
@@ -14,6 +14,7 @@ const DoctorSchema = new mongoose.Schema({
     imageUrl:{ype: String},
     fromTime:{type: String},
     toTime:{type: String},
+    state:{type: String,default:"pending"},
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
