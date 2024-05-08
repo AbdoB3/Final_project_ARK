@@ -10,10 +10,10 @@ router.post('/', createPatient)
 
 
 router.use(authenticateUser);
+
 router.get('/:id', getPatientById);
 
 router.get('/', authorize(['admin']),getAllPatient);
-router.get('/', authorize(['admin']), getAllPatient);
 
 router.get('/:doctorId/:patientId', authorize(['admin']), patientDoc);
 
