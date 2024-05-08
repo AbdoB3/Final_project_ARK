@@ -10,7 +10,6 @@ const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware'
 router.post('/', CreateAdmin);
 router.post('/login', adMed);
 
-
 router.use(authenticateUser);
 
 router.get('/', authorize(['admin']),GetAllAdmins);

@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 
 const app = express();
+app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,7 +40,6 @@ app.use('/speciality', SpecialityRoutes);
     
 const consultationRoutes=require('./src/Routes/consultationRoutes');
 app.use('/consultation',consultationRoutes);
-
 
 app.listen(port, () => {
     console.log(`listening to port ${port}`)

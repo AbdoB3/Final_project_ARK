@@ -46,9 +46,9 @@ const getSpecialities = async () => {
 // get all Doctors:
 const getAllDoctors = async (req, res) => {
     try {
-        const doctors = await Doctor.find().populate('speciality');
+        const doctors = await Doctor.find();
         const specialities = await getSpecialities();
-        res.status(200).send({ doctors, specialities });
+        res.status(200).json(doctors);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -101,7 +101,8 @@ const getDoctorById = async(req,res) =>{
 
 const updateDoctorById = async (req, res) => {
     const { id } = req.params;
-    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,imageUrl,fromTime, toTime } = req.body;
+    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,fromTime, toTime } = req.body;
+    const { city, country, state } = address;
 
     if (sexe !== 'homme' && sexe !== 'femme') {
         return res.status(400).send('Invalid value for sex');
@@ -127,7 +128,6 @@ const updateDoctorById = async (req, res) => {
             speciality: existingSpeciality.nom, 
             experience,
             feePer,
-            imageUrl,
             fromTime,
             toTime
         }, { new: true });
