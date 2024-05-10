@@ -40,7 +40,7 @@ const adMed = async (req, res) => {
             }
 
             const token = jwt.sign({ userId: doctor._id, role: 'doctor' }, 'secret_key', { expiresIn: '24h' });
-            return res.send(`Welcome to the doctor dashboard with token : ${token}`);
+            return res.send(`${token}`);
         }
 
         const admin = await Admin.findOne({ email: req.body.email });

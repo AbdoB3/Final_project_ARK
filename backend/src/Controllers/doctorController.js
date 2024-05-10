@@ -29,9 +29,22 @@ cloudinary.config({
 */
 
 
+// Profile
 
-
-
+const profile = async(req,res) =>{
+    const id = req.idU;
+    //console.log('id connected from token',id)
+    try{
+        const doctor = await Doctor.findById(id);
+        if(!doctor){
+            res.status(404).send('Doctor not Found')
+        }else{
+            res.status(200).json(doctor);
+        }
+    }catch(error){
+        res.status(500).send('Error: ' + error.message)
+    }
+};
 
 
 // Function to fetch specialities
@@ -182,6 +195,7 @@ const deleteDoctorById = async (req, res) => {
 }
 
 module.exports = {
+    profile,
     getAllDoctors,
     getDoctorById,
     createDoctor,
