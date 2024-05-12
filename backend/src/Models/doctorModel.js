@@ -11,7 +11,7 @@ const DoctorSchema = new mongoose.Schema({
     speciality: { type: String },
     experience: { type: String }, 
     feePer:{type: Number},
-    imageUrl:{ype: String},
+    imageUrl:{type: String},
     fromTime:{type: String},
     toTime:{type: String},
     createdAt: { type: Date, default: Date.now },

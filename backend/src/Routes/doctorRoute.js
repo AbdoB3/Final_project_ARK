@@ -13,6 +13,8 @@ const {
 const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
     router.post('/', createDoctor);
+    router.get('/',getAllDoctors);
+    router.get('/speciality/:speciality', findDoctorsBySpeciality);
 
     router.use(authenticateUser)
 
