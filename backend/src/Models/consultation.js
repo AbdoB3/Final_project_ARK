@@ -5,7 +5,7 @@ const consultationSchema = new mongoose.Schema({
     patient_id: { type: mongoose.Schema.Types.ObjectId, ref: 'patient', required: true },
     date_consultation: { type: Date, required: true },
     motif_consultation: String,
-    Prix:{type:Number,require:true},
+    price:{type:Number,require:true},
     consultation_type: { type: String, enum: ['presential', 'online'], default: 'presential' }
 
 });
