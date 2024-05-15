@@ -114,7 +114,7 @@ const getDoctorById = async(req,res) =>{
 
 const updateDoctorById = async (req, res) => {
     const { id } = req.params;
-    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,fromTime, toTime } = req.body;
+    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,fromTime, toTime,imageUrl } = req.body;
     const { city, country, state } = address;
 
     if (sexe !== 'homme' && sexe !== 'femme') {
@@ -141,13 +141,16 @@ const updateDoctorById = async (req, res) => {
             speciality: existingSpeciality.nom, 
             experience,
             feePer,
+            imageUrl,
             fromTime,
-            toTime
+            toTime,
+            
         }, { new: true });
 
         if (!updatedDoctor) {
             return res.status(404).send('Doctor not found');
         }
+        await Doctor.findByIdAndUpdate(id, { imageUrl }, { new: true });
 
         res.status(200).send({ updatedDoctor});
     } catch (error) {
