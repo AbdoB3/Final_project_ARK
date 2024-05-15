@@ -59,11 +59,10 @@ let patientDoc = async (req, res) => {
     try {
         let patient = await Patient.findById(patientId)
         let doctor = await Doctor.findById(doctorId)
-        if (!patient || !doctor) {
+        if (!patient && !doctor) {
             return res.status(404).json('Patient or Doctor not found')
         }
-
-        res.json({ patName: patient.firstName + " " + patient.lastName, docName: doctor.firstname + " " + doctor.lastname })
+        res.json({ patName: patient ? patient.firstName + " " + patient.lastName:"", docName: doctor ? doctor.firstname + " " + doctor.lastname:"" })
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

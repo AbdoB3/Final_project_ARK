@@ -56,7 +56,7 @@ const getAllDoctors = async (req, res) => {
 
 // Create a Doctor 
 const createDoctor = async (req, res) => {
-    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,imageUrl, fromTime, toTime } = req.body;
+    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer, imageUrl, fromTime, toTime } = req.body;
 
     // Télécharger l'image sur Cloudinary
 
@@ -70,11 +70,11 @@ const createDoctor = async (req, res) => {
         }
         //const imageUrl = await uploadImageToCloudinary(req.file);
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newDoctor = new Doctor({ firstname, lastname, email, password: hashedPassword, phone, sexe, address, speciality:existingSpeciality.nom, experience, feePer, imageUrl, fromTime, toTime });
+        const newDoctor = new Doctor({ firstname, lastname, email, password: hashedPassword, phone, sexe, address, speciality: existingSpeciality.nom, experience, feePer, imageUrl, fromTime, toTime });
         const savedDoctor = await newDoctor.save();
         const specialityName = existingSpeciality.nom;
 
-        res.status(201).send({ savedDoctor,speciality: specialityName});
+        res.status(201).send({ savedDoctor, speciality: specialityName });
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -83,16 +83,16 @@ const createDoctor = async (req, res) => {
 
 // get DoctorById
 
-const getDoctorById = async(req,res) =>{
-    const {id} = req.params;
-    try{
+const getDoctorById = async (req, res) => {
+    const { id } = req.params;
+    try {
         const doctor = await Doctor.findById(id);
-        if(!doctor){
+        if (!doctor) {
             res.status(404).send('Doctor not Found')
-        }else{
+        } else {
             res.status(200).send(doctor);
         }
-    }catch(error){
+    } catch (error) {
         res.status(500).send('Error: ' + error.message)
     }
 };
@@ -101,7 +101,7 @@ const getDoctorById = async(req,res) =>{
 
 const updateDoctorById = async (req, res) => {
     const { id } = req.params;
-    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,fromTime, toTime } = req.body;
+    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer, fromTime, toTime } = req.body;
     const { city, country, state } = address;
 
     if (sexe !== 'homme' && sexe !== 'femme') {
@@ -125,7 +125,7 @@ const updateDoctorById = async (req, res) => {
             phone,
             sexe,
             address,
-            speciality: existingSpeciality.nom, 
+            speciality: existingSpeciality.nom,
             experience,
             feePer,
             fromTime,
@@ -136,7 +136,7 @@ const updateDoctorById = async (req, res) => {
             return res.status(404).send('Doctor not found');
         }
 
-        res.status(200).send({ updatedDoctor});
+        res.status(200).send({ updatedDoctor });
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -147,22 +147,19 @@ const updateDoctorById = async (req, res) => {
 const deleteDoctorById = async (req, res) => {
     const { id } = req.params;
     try {
-      const deleteDoctor = await Doctor.findByIdAndDelete(id);
-      if (!deleteDoctor) {
-        res.status(404).send('Doctor not found');
-      } else {
-        res.status(200).send('Doctor deleted successfully');
-      }
+        const deleteDoctor = await Doctor.findByIdAndDelete(id);
+        if (!deleteDoctor) {
+            res.status(404).send('Doctor not found');
+        } else {
+            res.status(200).send('Doctor deleted successfully');
+        }
     } catch (error) {
-      res.status(500).send(error.message);
+        res.status(500).send(error.message);
     }
-  };
+};
 
 
-
-
-
-  const findDoctorsBySpeciality = async (req, res) => {
+const findDoctorsBySpeciality = async (req, res) => {
     const { speciality } = req.params;
 
     try {
@@ -181,13 +178,30 @@ const deleteDoctorById = async (req, res) => {
     }
 }
 
+const changeStatus = async (req, res) => {
+    const { id } = req.params;
+    const { state } = req.body;
+    try {
+        const doctor = await Doctor.findById(id);
+        if (!doctor) {
+            return res.status(404).send('Doctor not found');
+        }
+        await doctor.updateOne({ state }); // Assuming `state` is the field you want to update
+        res.status(200).send('Doctor status updated successfully');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
 module.exports = {
     getAllDoctors,
     getDoctorById,
     createDoctor,
     updateDoctorById,
     deleteDoctorById,
-    findDoctorsBySpeciality 
+    findDoctorsBySpeciality,
+    changeStatus
 
 }
 

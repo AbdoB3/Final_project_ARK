@@ -8,7 +8,8 @@ const {
     createDoctor,
     updateDoctorById,
     deleteDoctorById,
-    findDoctorsBySpeciality } = require ('../Controllers/doctorController')
+    findDoctorsBySpeciality,
+    changeStatus } = require ('../Controllers/doctorController')
 
 const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
 
@@ -16,6 +17,7 @@ const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware'
     
     router.use(authenticateUser)
 
+    router.patch('/:id', authorize(['admin']),changeStatus);
     router.get('/', authorize(['admin']),getAllDoctors);
     router.get('/:id',getDoctorById);
    
