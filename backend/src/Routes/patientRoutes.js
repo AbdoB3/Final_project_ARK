@@ -14,12 +14,12 @@ router.use(authenticateUser);
 
 router.get('/:id', getPatientById);
 
-router.get('/', authorize(['admin']),getAllPatient);
+router.get('/', authorize(['Admin']),getAllPatient);
 
-router.get('/:doctorId/:patientId', authorize(['admin']), patientDoc);
+router.get('/:doctorId/:patientId', authorize(['Admin']), patientDoc);
 
-router.put('/:id', authorize(['admin','patient']), updatePatient);
-router.delete('/:id', authorize(['admin']), deletePatient)
+router.put('/:id', authorize(['Admin','patient']), updatePatient);
+router.delete('/:id', authorize(['Admin']), deletePatient)
 
 
 
