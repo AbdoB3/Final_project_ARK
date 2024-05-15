@@ -39,8 +39,8 @@ const adMed = async (req, res) => {
                 return res.status(401).send('Incorrect doctor password');
             }
 
-            const token = jwt.sign({ userId: doctor._id, role: 'doctor' }, 'secret_key', { expiresIn: '24h' });
-            return res.send(`${token}`);
+            const token = jwt.sign({ userId: doctor._id, role: 'Doctor',name:doctor.firstname+" "+doctor.lastname}, 'secret_key', { expiresIn: '24h' });
+            return res.send(token);
         }
 
         const admin = await Admin.findOne({ email: req.body.email });
@@ -55,7 +55,7 @@ const adMed = async (req, res) => {
             return res.status(401).send('Incorrect admin password');
         }
 
-        const token = jwt.sign({ userId: admin._id, role: 'admin',name:admin.nom+" "+admin.prenom }, 'secret_key', { expiresIn: '24h' });
+        const token = jwt.sign({ userId: admin._id, role: 'Admin',name:admin.nom+" "+admin.prenom }, 'secret_key', { expiresIn: '24h' });
         return res.send(token);
 
     } catch (e) {
