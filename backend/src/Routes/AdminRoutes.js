@@ -8,7 +8,7 @@ const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware'
 
 
 router.post('/', CreateAdmin);
-router.post('/login',adMed);
+router.post('/login', adMed);
 
 router.use(authenticateUser);
 

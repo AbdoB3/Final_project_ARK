@@ -29,9 +29,22 @@ cloudinary.config({
 */
 
 
+// Profile
 
-
-
+const profile = async(req,res) =>{
+    const id = req.idU;
+    //console.log('id connected from token',id)
+    try{
+        const doctor = await Doctor.findById(id);
+        if(!doctor){
+            res.status(404).send('Doctor not Found')
+        }else{
+            res.status(200).json(doctor);
+        }
+    }catch(error){
+        res.status(500).send('Error: ' + error.message)
+    }
+};
 
 
 // Function to fetch specialities
@@ -101,7 +114,7 @@ const getDoctorById = async (req, res) => {
 
 const updateDoctorById = async (req, res) => {
     const { id } = req.params;
-    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer, fromTime, toTime } = req.body;
+    const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer,fromTime, toTime,imageUrl } = req.body;
     const { city, country, state } = address;
 
     if (sexe !== 'homme' && sexe !== 'femme') {
@@ -128,13 +141,16 @@ const updateDoctorById = async (req, res) => {
             speciality: existingSpeciality.nom,
             experience,
             feePer,
+            imageUrl,
             fromTime,
-            toTime
+            toTime,
+            
         }, { new: true });
 
         if (!updatedDoctor) {
             return res.status(404).send('Doctor not found');
         }
+        await Doctor.findByIdAndUpdate(id, { imageUrl }, { new: true });
 
         res.status(200).send({ updatedDoctor });
     } catch (error) {
@@ -195,6 +211,7 @@ const changeStatus = async (req, res) => {
 
 
 module.exports = {
+    profile,
     getAllDoctors,
     getDoctorById,
     createDoctor,
