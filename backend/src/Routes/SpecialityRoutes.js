@@ -5,7 +5,7 @@ const {GetAllSpecialities, GetSpecialityByName,	CreateSpeciality, UpdateSpeciali
 const {authorize} = require('../middlewares/adminDocMiddleware');
 
 
-router.get('/', authorize(['Admin']),GetAllSpecialities);
+router.get('/',GetAllSpecialities);
 
 router.post('/', authorize(['Admin']),CreateSpeciality);
 
