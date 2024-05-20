@@ -4,7 +4,7 @@ const { loginPatient } = require('../Controllers/authController');
 const router = express.Router();
 
 const { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient } = require('../Controllers/patientController')
-const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
+const {authenticateUser,authorize} = require('./Middlewares/adminDocMiddleware');
 
 const { getAllPatient, getPatientById, createPatient, updatePatient,
      deletePatient, patientDoc } = require('../Controllers/patientController')

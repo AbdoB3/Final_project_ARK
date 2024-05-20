@@ -18,43 +18,39 @@ const uploadImageToCloudinary = async (file) => {
     } catch (error) {
         throw new Error('Error uploading image to Cloudinary');
     }
-  }
+};
 
-*/
 const filterGender = async (req, res) => {
-        try {
-         const { gender, speciality, page = 1, limit = 5 } = req.query;
-          let query = {};
-          if (gender) {
+    try {
+        const { gender, speciality, page = 1, limit = 5 } = req.query;
+        let query = {};
+        if (gender) {
             query.sexe = gender;
-          }
-          if (speciality) {
+        }
+        if (speciality) {
             query.speciality = speciality;
-          }
-          const doctors = await Doctor.find(query);
-          res.json(doctors);
-        } catch (err) {
-          res.status(500).json({ message: err.message });
         }
-      };
-  
-// Profile
-
-const profile = async(req,res) =>{
-    const id = req.idU;
-    //console.log('id connected from token',id)
-    try{
-        const doctor = await Doctor.findById(id);
-        if(!doctor){
-            res.status(404).send('Doctor not Found')
-        }else{
-            res.status(200).json(doctor);
-        }
-    }catch(error){
-        res.status(500).send('Error: ' + error.message)
+        const doctors = await Doctor.find(query);
+        res.json(doctors);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 };
 
+// Profile
+const profile = async (req, res) => {
+    const id = req.idU;
+    try {
+        const doctor = await Doctor.findById(id);
+        if (!doctor) {
+            res.status(404).send('Doctor not Found')
+        } else {
+            res.status(200).json(doctor);
+        }
+    } catch (error) {
+        res.status(500).send('Error: ' + error.message)
+    }
+};
 
 // Function to fetch specialities
 const getSpecialities = async () => {
@@ -78,7 +74,7 @@ const getAllDoctors = async (req, res) => {
 
 // Create a Doctor
 const createDoctor = async (req, res) => {
-    const { firstname, lastname, email, password,description, phone, sexe, address, 
+    const { firstname, lastname, email, password, description, phone, sexe, address,
         speciality, experience, feePer, fromTime, toTime } = req.body;
 
     if (sexe !== 'homme' && sexe !== 'femme') {
@@ -89,12 +85,12 @@ const createDoctor = async (req, res) => {
         if (!existingSpeciality) {
             return res.status(400).send('Speciality does not exist');
         }
-        
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const newDoctor = new Doctor({
-            firstname, lastname, email,description, password: hashedPassword, phone, sexe, address, 
-            speciality: existingSpeciality.nom, experience, feePer, 
-            imageUrl: req.file ? await uploadImageToCloudinary(req.file) : null, 
+            firstname, lastname, email, description, password: hashedPassword, phone, sexe, address,
+            speciality: existingSpeciality.nom, experience, feePer,
+            imageUrl: req.file ? await uploadImageToCloudinary(req.file) : null,
             fromTime, toTime
         });
         const savedDoctor = await newDoctor.save();
@@ -104,15 +100,11 @@ const createDoctor = async (req, res) => {
     }
 };
 
-// get DoctorById
-
+// Get Doctor by ID
 const getDoctorById = async (req, res) => {
     const { id } = req.params;
     try {
         const doctor = await Doctor.findById(id);
-        if (!doctor) {
-            res.status(404).send('Doctor not Found')
-        } else {
         if (!doctor) {
             res.status(404).send('Doctor not Found');
         } else {
@@ -126,7 +118,7 @@ const getDoctorById = async (req, res) => {
 // Update Doctor by ID
 const updateDoctorById = async (req, res) => {
     const { id } = req.params;
-    const { firstname, lastname,description, email, password, phone,
+    const { firstname, lastname, description, email, password, phone,
         sexe, address, speciality, experience, feePer, fromTime, toTime } = req.body;
 
     if (sexe !== 'homme' && sexe !== 'femme') {
@@ -140,7 +132,7 @@ const updateDoctorById = async (req, res) => {
         }
 
         const updateFields = {
-            firstname, lastname, email, phone, sexe, address,description,
+            firstname, lastname, email, phone, sexe, address, description,
             speciality: existingSpeciality.nom, experience, feePer,
             imageUrl: req.file ? await uploadImageToCloudinary(req.file) : req.body.imageUrl,
             fromTime, toTime
@@ -174,8 +166,6 @@ const deleteDoctorById = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
-};
-
 
 const findDoctorsBySpeciality = async (req, res) => {
     const { speciality } = req.params;
@@ -190,7 +180,7 @@ const findDoctorsBySpeciality = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-}
+};
 
 const changeStatus = async (req, res) => {
     const { id } = req.params;
@@ -207,7 +197,6 @@ const changeStatus = async (req, res) => {
     }
 }
 
-
 module.exports = {
     filterGender,
     profile,
@@ -216,5 +205,6 @@ module.exports = {
     createDoctor,
     updateDoctorById,
     deleteDoctorById,
-    findDoctorsBySpeciality
-};
+    findDoctorsBySpeciality,
+    changeStatus
+}
