@@ -28,21 +28,37 @@ cloudinary.config({
 
 */
 const filterGender = async (req, res) => {
-        try {
-         const { gender, speciality, page = 1, limit = 5 } = req.query;
-          let query = {};
-          if (gender) {
-            query.sexe = gender;
-          }
-          if (speciality) {
-            query.speciality = speciality;
-          }
-          const doctors = await Doctor.find(query);
-          res.json(doctors);
-        } catch (err) {
-          res.status(500).json({ message: err.message });
-        }
-      };
+    try {
+      const { gender, speciality, page = 1, limit = 10 } = req.query;
+      const query = {};
+  
+      if (gender) {
+        query.sexe = gender;
+      }
+  
+      if (speciality) {
+        query.speciality = speciality;
+      }
+  
+      const pageNum = parseInt(page, 10);
+      const limitNum = parseInt(limit, 10);
+  
+      if (isNaN(pageNum) || isNaN(limitNum) || pageNum <= 0 || limitNum <= 0) {
+        return res.status(400).json({ error: 'Invalid page or limit number' });
+      }
+  
+      const skip = (pageNum - 1) * limitNum;
+  
+      const doctors = await Doctor.find(query).skip(skip).limit(limitNum);
+      const total = await Doctor.countDocuments(query);
+  
+      res.json({ doctors, total });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  
+
   
 // Profile
 

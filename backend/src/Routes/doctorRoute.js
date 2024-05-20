@@ -11,10 +11,13 @@ const {
     deleteDoctorById,
     findDoctorsBySpeciality,
     changeStatus,profile } = require ('../Controllers/doctorController')
-
+    router.post('/', createDoctor);
+    router.get('/:id',getDoctorById);
+    router.get('/speciality/:speciality', findDoctorsBySpeciality);
+    router.get('/',getAllDoctors);
 const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
 
-    router.post('/', createDoctor);
+
     router.get('/', filterGender);
     router.use(authenticateUser)
 
