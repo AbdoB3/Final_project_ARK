@@ -33,7 +33,7 @@ cloudinary.config({
 
 const profile = async(req,res) =>{
     const id = req.idU;
-    //console.log('id connected from token',id)
+    console.log('id connected from token',id)
     try{
         const doctor = await Doctor.findById(id);
         if(!doctor){
