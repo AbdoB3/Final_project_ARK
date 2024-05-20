@@ -3,17 +3,15 @@ const express = require('express');
 const { loginPatient } = require('../Controllers/authController');
 const router = express.Router();
 
-const { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient } = require('../Controllers/patientController')
-const {authenticateUser,authorize} = require('./Middlewares/adminDocMiddleware');
+const { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient , patientDoc} = require('../Controllers/patientController')
+const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
-const { getAllPatient, getPatientById, createPatient, updatePatient,
-     deletePatient, patientDoc } = require('../Controllers/patientController')
-const { getSum } = require('../controllers/sumController')
+
+const { getSum } = require('../Controllers/sumController')
 router.post('/login', loginPatient)
 router.get('/',getAllPatient);
 router.post('/register', createPatient);
 
-const { authenticateUser, authorize } = require('../middlewares/adminDocMiddleware');
 
 
 
