@@ -8,18 +8,16 @@ const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware'
 
 
 router.post('/', CreateAdmin);
-
+router.post('/login', adMed);
 
 router.use(authenticateUser);
 
-router.get('/', authorize(['admin']),GetAllAdmins);
+router.get('/', authorize(['Admin']),GetAllAdmins);
 
-router.get('/:id', authorize(['admin']),AdminById);
+router.get('/:id', authorize(['Admin']),AdminById);
 
-router.post('/login', authorize(['admin']),adMed);
+router.put('/:id', authorize(['Admin']),UpdateAdmin);
 
-router.put('/:id', authorize(['admin']),UpdateAdmin);
-
-router.delete('/:id', authorize(['admin']),DeleteAdmin);
+router.delete('/:id', authorize(['Admin']),DeleteAdmin);
 
 module.exports = router;

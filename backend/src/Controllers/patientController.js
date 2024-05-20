@@ -1,5 +1,6 @@
 
 const Patient = require('../Models/Patients')
+const Doctor = require('../Models/doctorModel')
 const bcrypt = require('bcrypt');
 
 
@@ -14,15 +15,15 @@ const getPatientById = async (req, res, next) => {
     if (patientById) {
         res.json(patientById)
     } else {
-        const err = new Error('post not found');
+        const err = new Error('Patient not found');
         next(err)
     }
 };
 
 const createPatient = async (req, res) => {
-    let { firstName, lastName, password, adresse, location, sexe, date_nais, email } = req.body;
+    let { firstName, lastName, phone, password, adresse, location, sexe, date_nais, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    let patient = new Patient({ firstName, lastName, password: hashedPassword, adresse, location, sexe, date_nais, email })
+    let patient = new Patient({ firstName, lastName, phone, password: hashedPassword, adresse, location, sexe, date_nais, email })
     try {
         let savedPatient = await patient.save()
         res.send(savedPatient)
@@ -31,16 +32,15 @@ const createPatient = async (req, res) => {
 
 const updatePatient = async (req, res, next) => {
     const id = req.params.id;
-
-    let { firstName, lastName, adresse, location, sexe, date_nais, password, email } = req.body;
+    let { firstName, lastName, phone, email, sexe, adresse, location, date_nais, password, } = req.body;
     try {
-        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, adresse, location, sexe, date_nais, password, email })
+        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, phone, email,sexe })
         if (!updatedPatient) {
-            return res.status(404).json('post not found')
+            return res.status(404).json('Patient not found')
         }
-        res.send(updatedPatient);
+        res.status(200).send(updatedPatient);
     } catch {
-        const err = new Error('post not found');
+        const err = new Error('Patient not found');
         next(err)
     }
 };
@@ -54,4 +54,19 @@ const deletePatient = async (req, res, next) => {
     res.send('Deleted successfuly');
 };
 
-module.exports = { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient }
+let patientDoc = async (req, res) => {
+    const { doctorId, patientId } = req.params;
+    try {
+        let patient = await Patient.findById(patientId)
+        let doctor = await Doctor.findById(doctorId)
+        if (!patient && !doctor) {
+            return res.status(404).json('Patient or Doctor not found')
+        }
+        res.json({ patName: patient ? patient.firstName + " " + patient.lastName:"", docName: doctor ? doctor.firstname + " " + doctor.lastname:"" })
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+module.exports = { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient, patientDoc }

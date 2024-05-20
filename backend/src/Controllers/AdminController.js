@@ -25,10 +25,10 @@ const AdminById = async (req, res, next) => {
 // CREATE new admin
 async function CreateAdmin(req, res) {
 
-    let { nom, prenom, identifiant, password, email } = req.body;
+    let { nom, prenom, email, identifiant, password } = req.body;
     try {
         const hashedpassword = await bcrypt.hash(password, 10);
-        let admin = new Admin({ nom, prenom, identifiant, password: hashedpassword, email });
+        let admin = new Admin({ nom, prenom, email, identifiant, password: hashedpassword });
         const newAdmin = await admin.save();
         res.status(201).json(newAdmin);
     } catch (err) {
@@ -38,12 +38,12 @@ async function CreateAdmin(req, res) {
 };
 
 // UPDATE admin by ID
- async function UpdateAdmin (req, res) {
-   try {
-		let { id } = req.params;
-        let { nom , prenom, identifiant, mot_de_passe }= req.body;
-        
-        const updatedAdmin = await Admin.findByIdAndUpdate(id, { nom, prenom , identifiant, mot_de_passe} , {new:true});
+async function UpdateAdmin(req, res) {
+    try {
+        let { id } = req.params;
+        let { nom, prenom, identifiant, mot_de_passe } = req.body;
+
+        const updatedAdmin = await Admin.findByIdAndUpdate(id, { nom, prenom, identifiant, mot_de_passe }, { new: true });
         res.json(updatedAdmin);
     } catch (err) {
         res.status(400).json({ message: err.message });

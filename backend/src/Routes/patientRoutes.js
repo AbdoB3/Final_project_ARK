@@ -1,22 +1,34 @@
 const express = require('express');
+
 const { loginPatient } = require('../Controllers/authController');
 const router = express.Router();
 
 const { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient } = require('../Controllers/patientController')
 const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
+const { getAllPatient, getPatientById, createPatient, updatePatient,
+     deletePatient, patientDoc } = require('../Controllers/patientController')
+const { getSum } = require('../controllers/sumController')
 router.post('/login', loginPatient)
-router.post('/', createPatient)
+router.get('/',getAllPatient);
+router.post('/register', createPatient);
+
+const { authenticateUser, authorize } = require('../middlewares/adminDocMiddleware');
 
 
+
+
+router.get('/sum', getSum);
 router.use(authenticateUser);
 
-router.get('/', authorize(['admin']), getAllPatient)
-router.get('/:id', getPatientById)
+router.get('/:id', getPatientById);
 
+// router.get('/', authorize(['Admin']),getAllPatient);
 
-router.put('/:id', authorize(['admin','patient']), updatePatient)
-router.delete('/:id', authorize(['admin']),deletePatient)
+router.get('/:doctorId/:patientId', authorize(['Admin']), patientDoc);
+
+router.put('/:id', authorize(['Admin','patient']), updatePatient);
+router.delete('/:id', authorize(['Admin']), deletePatient)
 
 
 

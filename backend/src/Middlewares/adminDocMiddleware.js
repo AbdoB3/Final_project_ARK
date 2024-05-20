@@ -12,13 +12,14 @@ const tokenValue = token.slice(7); // Remove 'Bearer ' prefix
 
 try {
     decodedToken = jwt.verify(tokenValue, 'secret_key');
+    req.idU= decodedToken.userId;
     next();
 } catch (error) {
     if (error.name === 'TokenExpiredError') {
         return res.status(401).send('Unauthorized: Token expired');
     }
 }
-  };
+};
 
 
   const authorize = (requiredRoles) => {
@@ -34,7 +35,8 @@ try {
             if (err) {
                 return res.status(403).json({ message: 'Forbidden' });
             }
-
+           
+          
             // Check if user has any of the required roles
             if (!requiredRoles.includes(decoded.role)) {
                 return res.status(403).json({ message: `Forbidden: Access Denied for ${decoded.role}` });

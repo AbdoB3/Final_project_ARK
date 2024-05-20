@@ -1,6 +1,7 @@
 const Speciality = require('../Models/SpecialityModel');
 
 // Controller for getting all specialities
+
 async function GetAllSpecialities(req, res) {
     try {
         const specialities = await Speciality.find({});

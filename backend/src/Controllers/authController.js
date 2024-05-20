@@ -30,41 +30,40 @@ const loginPatient = async (req, res) => {
 };
 const adMed = async (req, res) => {
     try {
-        const admin = await Admin.findOne({ email: req.body.email });
-        const doctor = await Doctor.findOne({ email: req.body.email });
+        const doctor = await Doctor.findOne({ email: req.body.email }); 
 
-        if (!admin && !doctor) {
+        if (doctor) {
+            const match = await bcrypt.compare(req.body.password, doctor.password);
+
+            if (!match) {
+                return res.status(401).send('Incorrect doctor password');
+            }
+
+            const token = jwt.sign({ userId: doctor._id, role: 'Doctor',name:doctor.firstname+" "+doctor.lastname}, 'secret_key', { expiresIn: '24h' });
+            return res.send(token);
+        }
+
+        const admin = await Admin.findOne({ email: req.body.email });
+
+        if (!admin) {
             return res.status(401).send('Incorrect email or password');
         }
 
-        let user;
-        let userType;
-
-        if (admin) {
-            user = admin;
-            userType = 'admin';
-        } else {
-            user = doctor;
-            userType = 'doctor';
-        }
-
-        const match = await bcrypt.compare(req.body.password, user.password);
+        const match = await bcrypt.compare(req.body.password, admin.password);
 
         if (!match) {
-            return res.status(401).send(`Incorrect ${userType} password`);
+            return res.status(401).send('Incorrect admin password');
         }
 
-        const token = jwt.sign({ userId: user._id, role: userType }, 'secret_key', { expiresIn: '24h' });
-
-        return res.send(`Welcome to the ${userType} dashboard with token : ${token}`);
-
-
+        const token = jwt.sign({ userId: admin._id, role: 'Admin',name:admin.nom+" "+admin.prenom }, 'secret_key', { expiresIn: '24h' });
+        return res.send(token);
 
     } catch (e) {
         console.error(e);
         res.status(500).send('Internal Server Error');
     }
 }
+
 
 
 module.exports = { loginPatient, adMed }

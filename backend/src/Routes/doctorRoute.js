@@ -3,27 +3,29 @@ const router = express.Router();
 const upload = require('../Middlewares/upload'); // Middleware Multer 
 
 const {
+    filterGender,
     getAllDoctors,
     getDoctorById,
     createDoctor,
     updateDoctorById,
     deleteDoctorById,
-    findDoctorsBySpeciality } = require ('../Controllers/doctorController')
-    router.put('/:id',updateDoctorById);
-const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
+    findDoctorsBySpeciality,
+    changeStatus,profile } = require ('../Controllers/doctorController')
+
+const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
 
     router.post('/', createDoctor);
-    router.get('/:id',getDoctorById);
-    router.get('/',getAllDoctors);
-    router.get('/speciality/:speciality', findDoctorsBySpeciality);
-
+    router.get('/', filterGender);
     router.use(authenticateUser)
 
-    router.get('/', authorize(['admin']),getAllDoctors);
+    router.patch('/:id', authorize(['Admin']),changeStatus);
+    // router.get('/', authorize(['Admin']),getAllDoctors);
+    router.get('/',getAllDoctors);
     router.get('/:id',getDoctorById);
+    router.get('/profile',profile);
    
-    // router.put('/:id',authorize(['admin','doctor']),updateDoctorById);
-    router.delete('/:id', authorize(['admin']),deleteDoctorById);
+    router.put('/:id',authorize(['Admin','Doctor']),updateDoctorById);
+    router.delete('/:id', authorize(['Admin']),deleteDoctorById);
     
     router.get('/speciality/:speciality', findDoctorsBySpeciality);
 

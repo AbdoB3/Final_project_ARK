@@ -18,7 +18,43 @@ const uploadImageToCloudinary = async (file) => {
     } catch (error) {
         throw new Error('Error uploading image to Cloudinary');
     }
+  }
+
+*/
+const filterGender = async (req, res) => {
+        try {
+         const { gender, speciality, page = 1, limit = 5 } = req.query;
+          let query = {};
+          if (gender) {
+            query.sexe = gender;
+          }
+          if (speciality) {
+            query.speciality = speciality;
+          }
+          const doctors = await Doctor.find(query);
+          res.json(doctors);
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      };
+  
+// Profile
+
+const profile = async(req,res) =>{
+    const id = req.idU;
+    //console.log('id connected from token',id)
+    try{
+        const doctor = await Doctor.findById(id);
+        if(!doctor){
+            res.status(404).send('Doctor not Found')
+        }else{
+            res.status(200).json(doctor);
+        }
+    }catch(error){
+        res.status(500).send('Error: ' + error.message)
+    }
 };
+
 
 // Function to fetch specialities
 const getSpecialities = async () => {
@@ -32,9 +68,9 @@ const getSpecialities = async () => {
 // get all Doctors
 const getAllDoctors = async (req, res) => {
     try {
-        const doctors = await Doctor.find().populate('speciality');
+        const doctors = await Doctor.find();
         const specialities = await getSpecialities();
-        res.status(200).send({ doctors, specialities });
+        res.status(200).json(doctors);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -68,11 +104,15 @@ const createDoctor = async (req, res) => {
     }
 };
 
-// Get Doctor by ID
+// get DoctorById
+
 const getDoctorById = async (req, res) => {
     const { id } = req.params;
     try {
         const doctor = await Doctor.findById(id);
+        if (!doctor) {
+            res.status(404).send('Doctor not Found')
+        } else {
         if (!doctor) {
             res.status(404).send('Doctor not Found');
         } else {
@@ -134,8 +174,9 @@ const deleteDoctorById = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+};
 
-// Find Doctors by Speciality
+
 const findDoctorsBySpeciality = async (req, res) => {
     const { speciality } = req.params;
     try {
@@ -149,9 +190,27 @@ const findDoctorsBySpeciality = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-};
+}
+
+const changeStatus = async (req, res) => {
+    const { id } = req.params;
+    const { state } = req.body;
+    try {
+        const doctor = await Doctor.findById(id);
+        if (!doctor) {
+            return res.status(404).send('Doctor not found');
+        }
+        await doctor.updateOne({ state }); // Assuming `state` is the field you want to update
+        res.status(200).send('Doctor status updated successfully');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 
 module.exports = {
+    filterGender,
+    profile,
     getAllDoctors,
     getDoctorById,
     createDoctor,

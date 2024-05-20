@@ -6,7 +6,7 @@ const DoctorSchema = new mongoose.Schema({
     description: { type: String, required: false },
     email :{type: String, required: true },
     password :{type: String},
-    phone :{type: String, required: true },
+    phone :{type: String},
     sexe: { type: String, enum: ['homme', 'femme']},
     address: {city: String,state: String,country: String},
     speciality: { type: String },
@@ -15,6 +15,7 @@ const DoctorSchema = new mongoose.Schema({
     imageUrl:{type: String},
     fromTime:{type: String},    
     toTime:{type: String},
+    state:{type: String,default:"pending"},
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });

@@ -32,6 +32,16 @@ async function findConsultationById(req, res) {
     }
 }
 
+async function findConsultationsByDoctorId(req, res) {
+    try {
+        const { doctorId } = req.params; 
+        const consultations = await Consultation.find({ doctor_id: doctorId }); 
+        res.json(consultations); 
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 async function updateConsultation(req, res) {
     try {
         const { id } = req.params;
@@ -64,5 +74,6 @@ module.exports = {
     createConsultation,
     findConsultationById,
     updateConsultation,
-    deleteConsultation
+    deleteConsultation,
+    findConsultationsByDoctorId
 };
