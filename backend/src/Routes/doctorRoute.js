@@ -3,6 +3,7 @@ const router = express.Router();
 const upload = require('../Middlewares/upload'); // Middleware Multer 
 
 const {
+    filterGender,
     getAllDoctors,
     getDoctorById,
     createDoctor,
@@ -14,11 +15,12 @@ const {
 const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
 
     router.post('/', createDoctor);
-    
+    router.get('/', filterGender);
     router.use(authenticateUser)
 
     router.patch('/:id', authorize(['Admin']),changeStatus);
-    router.get('/', authorize(['Admin']),getAllDoctors);
+    // router.get('/', authorize(['Admin']),getAllDoctors);
+    router.get('/',getAllDoctors);
     router.get('/:id',getDoctorById);
     router.get('/profile',profile);
    

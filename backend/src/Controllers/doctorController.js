@@ -27,8 +27,23 @@ cloudinary.config({
   }
 
 */
-
-
+const filterGender = async (req, res) => {
+        try {
+         const { gender, speciality, page = 1, limit = 5 } = req.query;
+          let query = {};
+          if (gender) {
+            query.sexe = gender;
+          }
+          if (speciality) {
+            query.speciality = speciality;
+          }
+          const doctors = await Doctor.find(query);
+          res.json(doctors);
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      };
+  
 // Profile
 
 const profile = async(req,res) =>{
@@ -211,6 +226,7 @@ const changeStatus = async (req, res) => {
 
 
 module.exports = {
+    filterGender,
     profile,
     getAllDoctors,
     getDoctorById,
