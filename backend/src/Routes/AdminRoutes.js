@@ -12,12 +12,12 @@ router.post('/login', adMed);
 
 router.use(authenticateUser);
 
-router.get('/', authorize(['admin']),GetAllAdmins);
+router.get('/', authorize(['Admin']),GetAllAdmins);
 
-router.get('/:id', authorize(['admin']),AdminById);
+router.get('/:id', authorize(['Admin']),AdminById);
 
-router.put('/:id', authorize(['admin']),UpdateAdmin);
+router.put('/:id', authorize(['Admin']),UpdateAdmin);
 
-router.delete('/:id', authorize(['admin']),DeleteAdmin);
+router.delete('/:id', authorize(['Admin']),DeleteAdmin);
 
 module.exports = router;

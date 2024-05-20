@@ -17,15 +17,13 @@ const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware'
     router.use(authenticateUser)
 
     router.get('/profile',profile);
-    router.patch('/:id', authorize(['admin']),changeStatus);
-    router.get('/', authorize(['admin']),getAllDoctors);
+    router.patch('/:id', authorize(['Admin']),changeStatus);
+    router.get('/', authorize(['Admin']),getAllDoctors);
     router.get('/:id',getDoctorById);
 
    
-
-   
-    router.put('/:id',authorize(['admin','doctor']),updateDoctorById);
-    router.delete('/:id', authorize(['admin']),deleteDoctorById);
+    router.put('/:id',authorize(['Admin','Doctor']),updateDoctorById);
+    router.delete('/:id', authorize(['Admin']),deleteDoctorById);
     
     router.get('/speciality/:speciality', findDoctorsBySpeciality);
 
