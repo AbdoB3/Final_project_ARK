@@ -22,8 +22,10 @@ const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware'
     router.get('/:id',getDoctorById);
 
    
-    router.put('/:id',authorize(['Admin','Doctor']),updateDoctorById);
-    router.delete('/:id', authorize(['Admin']),deleteDoctorById);
+
+   
+    router.put('/:id',authorize(['admin','doctor']),updateDoctorById);
+    router.delete('/:id', authorize(['admin']),deleteDoctorById);
     
     router.get('/speciality/:speciality', findDoctorsBySpeciality);
 

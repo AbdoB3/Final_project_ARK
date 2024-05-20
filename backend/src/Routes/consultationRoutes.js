@@ -5,12 +5,15 @@ const consultationController = require('../Controllers/consultationController');
 // Route to get all consultations
 router.get('/', consultationController.getAllConsultations);
 
+router.get('/patients/:doctorId', consultationController.getPatientsPerDoctor);
+
+router.get('/doctor/:doctorId',consultationController.findConsultationsByDoctorId);
+
 // :Route to create a new consultation
 router.post('/', consultationController.createConsultation);
 
 // Route to find a consultation by ID
 router.get('/:id', consultationController.findConsultationById);
-
 
 // Route to update a consultation by ID
 router.put('/:id', consultationController.updateConsultation);

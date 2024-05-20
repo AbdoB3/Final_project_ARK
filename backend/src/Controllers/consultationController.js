@@ -10,6 +10,7 @@ async function getAllConsultations(req, res) {
     }
 }
 
+
 // Create a new consultation
 async function createConsultation(req, res) {
     try {
@@ -34,6 +35,27 @@ async function findConsultationById(req, res) {
         res.status(500).json(err.message);
     }
 }
+
+async function findConsultationsByDoctorId(req, res) {
+    try {
+        const { doctorId } = req.params; 
+        const consultations = await Consultation.find({ doctor_id: doctorId }); 
+        res.json(consultations); 
+    } catch (err) {
+        res.status(500).json(err.message); 
+    }
+}
+
+async function getPatientsPerDoctor(req, res) {
+    try {
+        const { doctorId } = req.params; 
+        const consultations = await Consultation.find({ doctor_id: doctorId },{patient_id:1,_id:0}); 
+        res.json(consultations); 
+    } catch (err) {
+        res.status(500).json(err.message); 
+    }
+}
+
 
 // Update a consultation by ID
 async function updateConsultation(req, res) {
@@ -69,5 +91,7 @@ module.exports = {
     createConsultation,
     findConsultationById,
     updateConsultation,
-    deleteConsultation
+    deleteConsultation,
+    findConsultationsByDoctorId,
+    getPatientsPerDoctor
 };
