@@ -4,7 +4,7 @@ const router= express.Router();
 const { GetAllAdmins, CreateAdmin, AdminById, UpdateAdmin, DeleteAdmin} = require('../Controllers/AdminController');
 const { adMed } = require('../Controllers/authController');
 
-const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
+const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
 
 router.post('/', CreateAdmin);

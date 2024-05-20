@@ -233,7 +233,7 @@ const changeStatus = async (req, res) => {
         if (!doctor) {
             return res.status(404).send('Doctor not found');
         }
-        await doctor.updateOne({ state }); // Assuming `state` is the field you want to update
+        await doctor.updateOne({ state }); // Assuming state is the field you want to update
         res.status(200).send('Doctor status updated successfully');
     } catch (error) {
         res.status(500).send(error.message);
@@ -253,4 +253,3 @@ module.exports = {
     changeStatus
 
 }
-

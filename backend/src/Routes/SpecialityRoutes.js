@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const {GetAllSpecialities, GetSpecialityByName,	CreateSpeciality, UpdateSpeciality, DeleteSpeciality  } = require("../Controllers/SpecialityController");
-
-const {authorize} = require('../middlewares/adminDocMiddleware');
+router.get('/', GetAllSpecialities);
+const {authorize} = require('../Middlewares/adminDocMiddleware');
+// router.get('/', authorize(['admin']),GetAllSpecialities);
 
 
 // router.get('/', authorize(['Admin']),GetAllSpecialities);
