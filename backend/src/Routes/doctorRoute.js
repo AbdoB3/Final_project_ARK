@@ -12,10 +12,12 @@ const {
     findDoctorsBySpeciality,
     changeStatus,profile } = require ('../Controllers/doctorController')
     router.get('/:id',getDoctorById);
+    router.get('/speciality/:speciality', findDoctorsBySpeciality);
+    router.post('/', createDoctor);
     
 const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
-    router.post('/', createDoctor);
+  
     router.get('/', filterGender);
     router.use(authenticateUser)
 
@@ -28,6 +30,5 @@ const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware'
     router.put('/:id',authorize(['Admin','Doctor']),updateDoctorById);
     router.delete('/:id', authorize(['Admin']),deleteDoctorById);
     
-    router.get('/speciality/:speciality', findDoctorsBySpeciality);
 
     module.exports = router;
