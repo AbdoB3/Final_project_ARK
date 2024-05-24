@@ -1,4 +1,5 @@
 const Consultation = require('../Models/consultation');
+const Patient = require('../Models/Patients');
 
 
 async function getAllConsultations(req, res) {
@@ -49,8 +50,11 @@ async function findConsultationsByDoctorId(req, res) {
 async function getPatientsPerDoctor(req, res) {
     try {
         const { doctorId } = req.params; 
-        const consultations = await Consultation.find({ doctor_id: doctorId },{patient_id:1,_id:0}); 
-        res.json(consultations); 
+        const consultations = await Consultation.find({ doctor_id: doctorId },{patient_id:1,_id:0});
+        const patientIds = consultations.map(consultation => consultation.patient_id);
+  
+        const patients = await Patient.find({ _id: { $in: patientIds } })      
+        res.json(patients); 
     } catch (err) {
         res.status(500).json(err.message); 
     }
