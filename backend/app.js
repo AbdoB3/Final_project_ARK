@@ -41,6 +41,8 @@ app.use('/speciality', SpecialityRoutes);
 const consultationRoutes=require('./src/Routes/consultationRoutes');
 app.use('/consultation',consultationRoutes);
 
+const MedicalRoutes = require('./src/Routes/MedicalRoutes');
+app.use('/medical', MedicalRoutes)
 app.listen(port, () => {
     console.log(`listening to port ${port}`)
 });
