@@ -7,8 +7,8 @@ const consultationSchema = new mongoose.Schema({
 
     
     motif_consultation: String,
-    price:{type:Number,require:true},
-    consultation_type: { type: String, enum: ['presential', 'online'], default: 'presential' }
+    price:{type:Number,require:false},
+    consultation_type: { type: String, enum: ['presential', 'online'], default: 'presential',require:false }
 
 });
 

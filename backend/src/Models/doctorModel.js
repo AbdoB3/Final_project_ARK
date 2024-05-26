@@ -13,8 +13,8 @@ const DoctorSchema = new mongoose.Schema({
     experience: { type: String }, 
     feePer:{type: Number},
     imageUrl:{type: String},
-    fromTime:{type: String},    
-    toTime:{type: String},
+    fromTime:{type: String, required: false },    
+    toTime:{type: String, required: false },
     state:{type: String,default:"pending"},
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }

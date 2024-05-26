@@ -12,7 +12,8 @@ const {
     findDoctorsBySpeciality,
     changeStatus,profile } = require ('../Controllers/doctorController')
     router.get('/:id',getDoctorById);
-    router.get('/speciality/:speciality', findDoctorsBySpeciality);
+    router.get('/speciality/:speciality', findDoctorsBySpeciality)
+    ;
     router.post('/', createDoctor);
     
 const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
