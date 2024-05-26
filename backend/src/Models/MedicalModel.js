@@ -1,18 +1,7 @@
 const mongoose = require('mongoose');
 
 const MedicalFormSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  birthdate: {
-    type: Date,
-    required: true,
-  },
-  symptoms: {
-    type: [String],
-    required: true,
-  },
+  
   allergies: {
     type: [String],
     required: true,
