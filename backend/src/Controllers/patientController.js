@@ -34,7 +34,7 @@ const updatePatient = async (req, res, next) => {
     const id = req.params.id;
     let { firstName, lastName, phone, email, sexe, adresse, location, date_nais, password, } = req.body;
     try {
-        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, phone, email,sexe })
+        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, phone, email, sexe })
         if (!updatedPatient) {
             return res.status(404).json('Patient not found')
         }
@@ -62,11 +62,37 @@ let patientDoc = async (req, res) => {
         if (!patient && !doctor) {
             return res.status(404).json('Patient or Doctor not found')
         }
-        res.json({ patName: patient ? patient.firstName + " " + patient.lastName:"", docName: doctor ? doctor.firstname + " " + doctor.lastname:"" })
+        res.json({ patName: patient ? patient.firstName + " " + patient.lastName : "", docName: doctor ? doctor.firstname + " " + doctor.lastname : "" })
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
 
+const getPatientsByIds = async (req, res, next) => {
+    try {
+      const ids = req.query.ids;
+  
+      if (!ids) {
+        return res.status(400).json({ message: "Invalid input: 'ids' query parameter is required." });
+      }
+      // Split the ids string into an array
+      const idsArray = ids.split(',');
+  
+      // Fetch patients whose IDs are in the array
+      const patients = await Patient.find({ _id: { $in: idsArray } });
+  
+      if (patients.length > 0) {
+        res.json(patients);
+      } else {
+        const err = new Error('No patients found for the provided IDs');
+        err.status = 404;
+        next(err);
+      }
+    } catch (error) {
+      console.error('Error fetching patients by IDs:', error);
+      next(error);
+    }
+  };
+  
 
-module.exports = { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient, patientDoc }
+module.exports = { getAllPatient, getPatientById, createPatient, updatePatient, deletePatient, patientDoc,getPatientsByIds }
