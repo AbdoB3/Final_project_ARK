@@ -21,7 +21,9 @@ const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware'
     router.patch('/:id', authorize(['Admin']),changeStatus);
     router.get('/', authorize(['Admin']),getAllDoctors);
     router.get('/:id',getDoctorById);
-    router.get('/profile',profile);
+
+   
+
    
     router.put('/:id',authorize(['Admin','Doctor']),updateDoctorById);
     router.delete('/:id', authorize(['Admin']),deleteDoctorById);
