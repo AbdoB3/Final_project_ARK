@@ -23,8 +23,10 @@ const getPatientById = async (req, res, next) => {
 const createPatient = async (req, res) => {
     let { firstName, lastName, phone, password, adresse, location, sexe, date_nais, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    let patient = new Patient({ firstName, lastName, phone, password: hashedPassword, adresse, location, sexe, date_nais, email })
+    let patient = new Patient({ firstName, lastName, phone,
+         password: hashedPassword, adresse, location, sexe, date_nais, email })
     try {
+
         let savedPatient = await patient.save()
         res.send(savedPatient)
     } catch (e) { res.send(e.message) }

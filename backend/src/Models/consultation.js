@@ -9,8 +9,8 @@ const consultationSchema = new mongoose.Schema({
         type: [String],
         required: true,
       },
-    price:{type:Number,require:true},
-    consultation_type: { type: String, enum: ['presential', 'online'], default: 'presential' }
+    price:{type:Number,require:false},
+    consultation_type: { type: String, enum: ['presential', 'online'], default: 'online' }
 
 });
 
