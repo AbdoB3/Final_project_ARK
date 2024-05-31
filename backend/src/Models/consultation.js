@@ -4,8 +4,13 @@ const consultationSchema = new mongoose.Schema({
     doctor_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor', required: true },
     patient_id: { type: mongoose.Schema.Types.ObjectId, ref: 'patient', required: true },
     date_consultation: { type: Date, required: true },
-    motif_consultation: String
+    motif_consultation: {
+        type: String,
+        required: true,
+    },
+    price: { type: Number, require: true },
+
 });
 
-const Consultation = mongoose.model('Consultation', consultationSchema); 
+const Consultation = mongoose.model('Consultation', consultationSchema);
 module.exports = Consultation;

@@ -9,11 +9,14 @@ const {
     updateDoctorById,
     deleteDoctorById,
     findDoctorsBySpeciality,
-    changeStatus,profile } = require ('../Controllers/doctorController')
+    changeStatus,profile} = require ('../Controllers/doctorController')
+
+    const {getSumPerDoctor} = require("../Controllers/sumController")
 
 const {authenticateUser,authorize} = require('../middlewares/adminDocMiddleware');
 
     router.post('/', createDoctor);
+    router.get('/sum/:doctorId',getSumPerDoctor);
     
     router.use(authenticateUser)
 

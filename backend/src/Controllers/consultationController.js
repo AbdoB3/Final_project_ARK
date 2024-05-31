@@ -15,8 +15,8 @@ async function getAllConsultations(req, res) {
 // Create a new consultation
 async function createConsultation(req, res) {
     try {
-        const { doctor_id, patient_id, date_consultation, motif_consultation} = req.body;
-        const consultation = await Consultation.create({ doctor_id, patient_id, date_consultation, motif_consultation});
+        const { doctor_id, patient_id, date_consultation, motif_consultation,price} = req.body;
+        await Consultation.create({ doctor_id, patient_id, date_consultation, motif_consultation,price});
         res.status(201).json("Consultation added successfully");
     } catch (err) {
         res.status(500).json(err.message);
