@@ -11,13 +11,40 @@ async function getAllConsultations(req, res) {
 
 async function createConsultation(req, res) {
     try {
-        const { doctor_id, patient_id, date_consultation, motif_consultation, consultation_type, price } = req.body;
-        const consultation = await Consultation.create({ doctor_id, patient_id, date_consultation, motif_consultation, consultation_type, price });
-        res.status(201).json({ message: "Consultation added successfully", consultation });
+      const {
+        doctor_id,
+        patient_id,
+        date_consultation,
+        time,
+        motif_consultation,
+        price,
+        consultation_type
+      } = req.body;
+  
+      console.log('Received data:', req.body);
+  
+      if (!doctor_id || !patient_id || !date_consultation || !time || !motif_consultation || !price) {
+        return res.status(400).json({ error: 'All fields are required' });
+      }
+  
+      const consultation = new Consultation({
+        doctor_id,
+        patient_id,
+        date_consultation,
+        time,
+        motif_consultation,
+        price,
+        consultation_type
+      });
+  
+      await consultation.save();
+      res.status(201).json({ message: "Consultation added successfully", consultation });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+      console.error('Error creating consultation:', err); // Log the error for debugging
+      res.status(500).json({ error: 'Internal Server Error', details: err.message });
     }
-}
+  }
+  
 
 async function findConsultationById(req, res) {
     try {
