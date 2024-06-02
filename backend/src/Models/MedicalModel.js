@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const MedicalFormSchema = new mongoose.Schema({
-  
+  // patient_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
   allergies: {
     type: [String],
     required: true,
