@@ -1,73 +1,82 @@
 const Consultation = require('../Models/consultation');
 
-// Create a new consultation
-const createConsultation = async (req, res) => {
+// Get all consultations
+exports.getAllConsultations = async (req, res) => {
   try {
-    const { doctor_id, patient_id, date_consultation, time, motif_consultation, consultation_type, message, price } = req.body;
+    const consultations = await Consultation.find().populate('doctor_id').populate('patient_id');
+    res.status(200).json(consultations);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    // Check if all required fields are provided
-    if (!doctor_id || !patient_id || !date_consultation || !time || !motif_consultation || !consultation_type || !message) {
-      return res.status(400).json({ error: 'All fields except price are required' });
+// Create a new consultation
+exports.createConsultation = async (req, res) => {
+  const { doctor_id, patient_id, date_consultation, time, motif_consultation, price, consultation_type } = req.body;
+
+  const newConsultation = new Consultation({
+    doctor_id,
+    patient_id,
+    date_consultation,
+    time,
+    motif_consultation,
+    price,
+    consultation_type
+  });
+
+  try {
+    const savedConsultation = await newConsultation.save();
+    res.status(201).json(savedConsultation);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Get a consultation by ID
+exports.getConsultationById = async (req, res) => {
+  try {
+    const consultation = await Consultation.findById(req.params.id).populate('doctor_id').populate('patient_id');
+    if (consultation == null) {
+      return res.status(404).json({ message: 'Consultation not found' });
     }
-}
+    res.status(200).json(consultation);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
+// Find consultations by doctor ID
+exports.findConsultationsByDoctorId = async (req, res) => {
+  try {
+    const consultations = await Consultation.find({ doctor_id: req.params.doctorId }).populate('doctor_id').populate('patient_id');
+    res.status(200).json(consultations);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-  
-
-async function findConsultationById(req, res) {
-    try {
-        const { id } = req.params;
-        const consultation = await Consultation.findById(id);
-        if (!consultation) {
-            return res.status(404).json({ message: 'Consultation not found' });
-        }
-        res.json(consultation);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+// Update a consultation by ID
+exports.updateConsultation = async (req, res) => {
+  try {
+    const updatedConsultation = await Consultation.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (updatedConsultation == null) {
+      return res.status(404).json({ message: 'Consultation not found' });
     }
-}
+    res.status(200).json(updatedConsultation);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-async function findConsultationsByDoctorId(req, res) {
-    try {
-        const { doctorId } = req.params; 
-        const consultations = await Consultation.find({ doctor_id: doctorId }); 
-        res.json(consultations); 
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+// Delete a consultation by ID
+exports.deleteConsultation = async (req, res) => {
+  try {
+    const deletedConsultation = await Consultation.findByIdAndDelete(req.params.id);
+    if (deletedConsultation == null) {
+      return res.status(404).json({ message: 'Consultation not found' });
     }
-}
-
-async function updateConsultation(req, res) {
-    try {
-        const { id } = req.params;
-        const { doctor_id, patient_id, date_consultation, motif_consultation, consultation_type, price } = req.body;
-        const consultation = await Consultation.findByIdAndUpdate(id, { doctor_id, patient_id, date_consultation, motif_consultation, consultation_type, price }, { new: true });
-        if (!consultation) {
-            return res.status(404).json({ message: 'Consultation not found' });
-        }
-        res.json({ message: "Consultation updated successfully", consultation });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-}
-
-async function deleteConsultation(req, res) {
-    try {
-        const { id } = req.params;
-        const consultation = await Consultation.findByIdAndDelete(id);
-        if (!consultation) {
-            return res.status(404).json({ message: 'Consultation not found' });
-        }
-        res.json({ message: "Consultation deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-}
-
-module.exports = {
-  createConsultation,
-  getAllConsultations,
-  getConsultationById,
-  updateConsultation,
-  deleteConsultation
+    res.status(200).json({ message: 'Consultation deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
