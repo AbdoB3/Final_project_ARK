@@ -19,7 +19,7 @@ const {
 const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
   
-    router.get('/', filterGender);
+    router.get('/filter', filterGender);
     router.use(authenticateUser)
 
     router.patch('/:id', authorize(['Admin']),changeStatus);
