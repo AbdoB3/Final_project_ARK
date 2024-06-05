@@ -10,32 +10,32 @@ const {
     updateDoctorById,
     deleteDoctorById,
     findDoctorsBySpeciality,
-    changeStatus,profile} = require ('../Controllers/doctorController')
+    changeStatus, profile } = require('../Controllers/doctorController')
+const { getSumPerDoctor } = require("../Controllers/sumController")
+const { authenticateUser, authorize } = require('../Middlewares/adminDocMiddleware');
 
-    const {getSumPerDoctor} = require("../Controllers/sumController")
-    router.get('/:id',getDoctorById);
-    router.get('/speciality/:speciality', findDoctorsBySpeciality)
-    ;
-    router.post('/', createDoctor);
-    router.get('/sum/:doctorId',getSumPerDoctor);
-    
-const {authenticateUser,authorize} = require('../Middlewares/adminDocMiddleware');
 
-  
-    router.get('/', filterGender);
-    router.use(authenticateUser)
+router.get('/filter', filterGender);
+router.get('/:id', getDoctorById);
+router.get('/speciality/:speciality', findDoctorsBySpeciality);
+router.post('/', createDoctor);
+router.get('/sum/:doctorId', getSumPerDoctor);
+//i added fileter path
 
-    router.get('/profile',profile);
-    router.patch('/:id', authorize(['Admin']),changeStatus);
-    // router.get('/', authorize(['Admin']),getAllDoctors);
-    router.get('/',getAllDoctors);
-    router.get('/:id',getDoctorById);
+router.use(authenticateUser);
+router.get('/', getAllDoctors);
 
-   
+router.get('/profile', profile);
+router.patch('/:id', authorize(['Admin']), changeStatus);
+//router.get('/', authorize(['Admin']),getAllDoctors);
 
-   
-    router.put('/:id',authorize(['Admin','Doctor']),updateDoctorById);
-    router.delete('/:id', authorize(['Admin']),deleteDoctorById);
-    
+router.get('/:id', getDoctorById);
 
-    module.exports = router;
+
+
+
+router.put('/:id', authorize(['Admin', 'Doctor']), updateDoctorById);
+router.delete('/:id', authorize(['Admin']), deleteDoctorById);
+
+
+module.exports = router;

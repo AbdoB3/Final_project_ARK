@@ -64,7 +64,8 @@ const filterGender = async (req, res) => {
 
 const profile = async(req,res) =>{
     const id = req.idU;
-    //console.log('id connected from token',id)
+    
+    //console.log('id hhhh connected from token',id)
     try{
         const doctor = await Doctor.findById(id);
         if(!doctor){
@@ -90,6 +91,7 @@ const getSpecialities = async () => {
 // get all Doctors:
 const getAllDoctors = async (req, res) => {
     try {
+        console.log('test');
         const doctors = await Doctor.find();
         const specialities = await getSpecialities();
         res.status(200).json(doctors);

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 
 
 const authenticateUser = (req, res, next) => {
+    console.log('yest')
   const token = req.headers.authorization;
 
 if (!token) {  
