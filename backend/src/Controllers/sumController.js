@@ -31,7 +31,12 @@ const getSumPerDoctor = async (req, res) => {
         const { doctorId } = req.params; 
         const objectId = new mongoose.Types.ObjectId(doctorId);
 
-        const sumPatient = await Consultation.countDocuments({ doctor_id: objectId },{patient_id:1,_id:0});
+        const sumPatient =await Consultation.aggregate([
+            { $match: { doctor_id: objectId } },  // Match consultations with the given doctorId
+            { $group: { _id: "$patient_id" } }, // Group by patient_id to count distinct patients
+            { $count: "count" } // Count the distinct patient IDs
+        ]);
+        console.log(sumPatient)
 
         const sumConsultation = await Consultation.countDocuments({ doctor_id: objectId });
 
@@ -45,7 +50,7 @@ const getSumPerDoctor = async (req, res) => {
         // Extract the total from the aggregation result
         const total = result.length > 0 ? result[0].total : 0;
 
-        res.json({result:total,sumPatient,sumConsultation} );
+        res.json({result:total,sumPatient:sumPatient[0].count,sumConsultation} );
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

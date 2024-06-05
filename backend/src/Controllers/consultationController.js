@@ -41,7 +41,7 @@ async function findConsultationsByDoctorId(req, res) {
     try {
         const { doctorId } = req.params; 
         const consultations = await Consultation.find({ doctor_id: doctorId }); 
-        res.json(consultations); 
+        res.json(consultations);
     } catch (err) {
         res.status(500).json(err.message); 
     }
