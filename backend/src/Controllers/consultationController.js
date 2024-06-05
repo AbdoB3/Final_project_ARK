@@ -80,3 +80,18 @@ exports.deleteConsultation = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Get consultations by patient ID
+exports.patientConsultation = async (req, res) => {
+  try {
+    const consultations = await Consultation.find({ patient_id: req.params.patientId })
+      .populate({
+        path: 'doctor_id',
+        select: 'firstname lastname'
+      });
+    res.status(200).json(consultations);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching consultations', error });
+  }
+};
+

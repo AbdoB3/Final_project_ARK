@@ -11,6 +11,11 @@ router.post('/', consultationController.createConsultation);
 // Route to find a consultation by ID
 router.get('/:id', consultationController.getConsultationById);
 
+// Route to find consultations by patient ID
+router.get('/patient/:patientId', consultationController.patientConsultation);
+
+
+
 // Route to find consultations by doctor ID
 router.get('/doctor/:doctorId', consultationController.findConsultationsByDoctorId);
 
