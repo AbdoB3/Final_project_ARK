@@ -6,6 +6,7 @@ const MedicalFormSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  patientId:{ type: String, required: true },
   other_allergies: {
     type: String,
     required: function() { return this.allergies.includes("Other"); },

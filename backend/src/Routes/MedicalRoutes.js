@@ -1,8 +1,9 @@
 const express = require('express');
 const router= express.Router();
 
-const {Form} = require('../Controllers/MedicalController');
+const {form,getMedicalFormByPatientId} = require('../Controllers/MedicalController');
 
-router.post('/', Form );
+router.post('/', form );
+router.get( '/:patientId',getMedicalFormByPatientId)
 
 module.exports = router;

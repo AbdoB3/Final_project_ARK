@@ -36,7 +36,6 @@ const getSumPerDoctor = async (req, res) => {
             { $group: { _id: "$patient_id" } }, // Group by patient_id to count distinct patients
             { $count: "count" } // Count the distinct patient IDs
         ]);
-        console.log(sumPatient)
 
         const sumConsultation = await Consultation.countDocuments({ doctor_id: objectId });
 
