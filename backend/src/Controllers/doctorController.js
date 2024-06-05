@@ -30,7 +30,7 @@ cloudinary.config({
 const filterGender = async (req, res) => {
     try {
       const { gender, speciality, page = 1, limit = 10 } = req.query;
-      const query = {};
+      const query = { state: 'active' }; // Ensure only active doctors are queried
   
       if (gender) {
         query.sexe = gender;
@@ -58,7 +58,6 @@ const filterGender = async (req, res) => {
     }
   };
   
-
   
 // Profile
 
