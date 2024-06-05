@@ -27,8 +27,39 @@ cloudinary.config({
   }
 
 */
+const filterGender = async (req, res) => {
+    try {
+      const { gender, speciality, page = 1, limit = 10 } = req.query;
+      const query = {};
+  
+      if (gender) {
+        query.sexe = gender;
+      }
+  
+      if (speciality) {
+        query.speciality = speciality;
+      }
+  
+      const pageNum = parseInt(page, 10);
+      const limitNum = parseInt(limit, 10);
+  
+      if (isNaN(pageNum) || isNaN(limitNum) || pageNum <= 0 || limitNum <= 0) {
+        return res.status(400).json({ error: 'Invalid page or limit number' });
+      }
+  
+      const skip = (pageNum - 1) * limitNum;
+  
+      const doctors = await Doctor.find(query).skip(skip).limit(limitNum);
+      const total = await Doctor.countDocuments(query);
+  
+      res.json({ doctors, total });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  
 
-
+  
 // Profile
 
 const profile = async(req,res) =>{
@@ -71,28 +102,51 @@ const getAllDoctors = async (req, res) => {
 const createDoctor = async (req, res) => {
     const { firstname, lastname, email, password, phone, sexe, address, speciality, experience, feePer, imageUrl, fromTime, toTime } = req.body;
 
-    // Télécharger l'image sur Cloudinary
+    // Validate required fields
+    if (!firstname || !lastname || !email || !password || !phone || !sexe || !address || !speciality || !experience || !feePer || !fromTime || !toTime) {
+        return res.status(400).send('All fields are required');
+    }
 
     if (sexe !== 'homme' && sexe !== 'femme') {
-        return res.status(400).send('Invalid value for sex');
+        return res.status(400).send('Invalid value for sexe');
     }
+
     try {
         const existingSpeciality = await Speciality.findOne({ nom: speciality });
         if (!existingSpeciality) {
             return res.status(400).send('Speciality does not exist');
         }
-        //const imageUrl = await uploadImageToCloudinary(req.file);
+
+        // Handle image upload if necessary
+        let finalImageUrl = imageUrl;
+        if (req.file) {
+            finalImageUrl = await uploadImageToCloudinary(req.file);
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newDoctor = new Doctor({ firstname, lastname, email, password: hashedPassword, phone, sexe, address, speciality: existingSpeciality.nom, experience, feePer, imageUrl, fromTime, toTime });
+        const newDoctor = new Doctor({
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword,
+            phone,
+            sexe,
+            address,
+            speciality: existingSpeciality.nom,
+            experience,
+            feePer,
+            imageUrl: finalImageUrl,
+            fromTime,
+            toTime
+        });
+
         const savedDoctor = await newDoctor.save();
-        const specialityName = existingSpeciality.nom;
-
-        res.status(201).send({ savedDoctor, speciality: specialityName });
+        res.status(201).send({ savedDoctor, speciality: existingSpeciality.nom });
     } catch (error) {
-        res.status(400).send(error.message);
+        logger.error('Error creating doctor:', error);
+        res.status(500).send('Internal Server Error');
     }
-}
-
+};
 
 // get DoctorById
 
@@ -202,7 +256,7 @@ const changeStatus = async (req, res) => {
         if (!doctor) {
             return res.status(404).send('Doctor not found');
         }
-        await doctor.updateOne({ state }); // Assuming `state` is the field you want to update
+        await doctor.updateOne({ state }); // Assuming state is the field you want to update
         res.status(200).send('Doctor status updated successfully');
     } catch (error) {
         res.status(500).send(error.message);
@@ -211,6 +265,7 @@ const changeStatus = async (req, res) => {
 
 
 module.exports = {
+    filterGender,
     profile,
     getAllDoctors,
     getDoctorById,
@@ -221,4 +276,3 @@ module.exports = {
     changeStatus
 
 }
-

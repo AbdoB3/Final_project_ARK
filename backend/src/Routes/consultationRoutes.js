@@ -7,13 +7,21 @@ router.get('/', consultationController.getAllConsultations);
 
 router.get('/patients/:doctorId', consultationController.getPatientsPerDoctor);
 
-router.get('/doctor/:doctorId',consultationController.findConsultationsByDoctorId);
+router.get('/patients/:doctorId', consultationController.getPatientsPerDoctor);
 
-// :Route to create a new consultation
+// Route to create a new consultation
 router.post('/', consultationController.createConsultation);
 
 // Route to find a consultation by ID
 router.get('/:id', consultationController.findConsultationById);
+
+// Route to find consultations by patient ID
+router.get('/patient/:patientId', consultationController.patientConsultation);
+
+
+
+// Route to find consultations by doctor ID
+router.get('/doctor/:doctorId', consultationController.findConsultationsByDoctorId);
 
 // Route to update a consultation by ID
 router.put('/:id', consultationController.updateConsultation);

@@ -13,15 +13,26 @@ async function getAllConsultations(req, res) {
 
 
 // Create a new consultation
-async function createConsultation(req, res) {
-    try {
-        const { doctor_id, patient_id, date_consultation, motif_consultation,price} = req.body;
-        await Consultation.create({ doctor_id, patient_id, date_consultation, motif_consultation,price});
-        res.status(201).json("Consultation added successfully");
-    } catch (err) {
-        res.status(500).json(err.message);
-    }
-}
+async function createConsultation (req, res) {
+  const { doctor_id, patient_id, date_consultation, time, motif_consultation, price, consultation_type } = req.body;
+
+  const newConsultation = new Consultation({
+    doctor_id,
+    patient_id,
+    date_consultation,
+    time,
+    motif_consultation,
+    price,
+    consultation_type
+  });
+
+  try {
+    const savedConsultation = await newConsultation.save();
+    res.status(201).json(savedConsultation);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 // Find a consultation by ID
 async function findConsultationById(req, res) {
@@ -37,11 +48,24 @@ async function findConsultationById(req, res) {
     }
 }
 
+async function patientConsultation  (req, res) {
+    try {
+      const consultations = await Consultation.find({ patient_id: req.params.patientId })
+        .populate({
+          path: 'doctor_id',
+          select: 'firstname lastname'
+        });
+      res.status(200).json(consultations);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching consultations', error });
+    }
+  };
+
 async function findConsultationsByDoctorId(req, res) {
     try {
         const { doctorId } = req.params; 
         const consultations = await Consultation.find({ doctor_id: doctorId }); 
-        res.json(consultations);
+        res.json(consultations); 
     } catch (err) {
         res.status(500).json(err.message); 
     }
@@ -97,5 +121,6 @@ module.exports = {
     updateConsultation,
     deleteConsultation,
     findConsultationsByDoctorId,
-    getPatientsPerDoctor
+    getPatientsPerDoctor,
+    patientConsultation
 };
