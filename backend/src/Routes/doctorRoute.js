@@ -14,25 +14,19 @@ const {
 const { getSumPerDoctor } = require("../Controllers/sumController")
 const { authenticateUser, authorize } = require('../Middlewares/adminDocMiddleware');
 
+router.post('/', createDoctor);
 router.get('/', getAllDoctors);
 
 router.get('/filter', filterGender);
 router.get('/:id', getDoctorById);
 router.get('/speciality/:speciality', findDoctorsBySpeciality);
-router.post('/', createDoctor);
 router.get('/sum/:doctorId', getSumPerDoctor);
-//i added fileter path
 
 router.use(authenticateUser);
 
 router.get('/profile', profile);
 router.patch('/:id', authorize(['Admin']), changeStatus);
 //router.get('/', authorize(['Admin']),getAllDoctors);
-
-router.get('/:id', getDoctorById);
-
-
-
 router.put('/:id', authorize(['Admin', 'Doctor']), updateDoctorById);
 router.delete('/:id', authorize(['Admin']), deleteDoctorById);
 

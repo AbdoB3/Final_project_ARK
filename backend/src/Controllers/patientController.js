@@ -1,4 +1,5 @@
 
+const jwt = require('jsonwebtoken');
 const Patient = require('../Models/Patients')
 const Doctor = require('../Models/doctorModel')
 const bcrypt = require('bcrypt');
@@ -20,6 +21,28 @@ const getPatientById = async (req, res, next) => {
     }
 };
 
+
+const createPatient = async (req, res) => {
+    console.log(req.body);
+    let { firstName, lastName, phone, password, city, location, sexe, date_nais, email } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    let patientInfo = new Patient({ firstName, lastName, phone, password: hashedPassword, city, location, sexe, date_nais, email });
+console.log(patientInfo)
+    // Create token
+    const token = jwt.sign({ userId: patientInfo._id, role: 'patient' }, 'secret_key', { expiresIn: '24h' });
+
+    try {
+        // Save patientInfo to the database
+        let savedPatient = await patientInfo.save();
+
+        // Send the token along with the saved patient info
+        res.json({ patient: savedPatient, token });
+    } catch (e) {
+        res.status(500).send(e.message);
+    }
+};
+
+/*
 const createPatient = async (req, res) => {
     let { firstName, lastName, phone, password, adresse, location, sexe, date_nais, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,12 +54,12 @@ const createPatient = async (req, res) => {
         res.send(savedPatient)
     } catch (e) { res.send(e.message) }
 };
-
+*/
 const updatePatient = async (req, res, next) => {
     const id = req.params.id;
-    let { firstName, lastName, phone, email, sexe, adresse, location, date_nais, password, } = req.body;
+    let { firstName, lastName, phone, email, sexe, city, location, date_nais, password, } = req.body;
     try {
-        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, phone, email, sexe })
+        let updatedPatient = await Patient.findOneAndUpdate({ _id: id }, { firstName, lastName, phone, email, sexe,city })
         if (!updatedPatient) {
             return res.status(404).json('Patient not found')
         }
