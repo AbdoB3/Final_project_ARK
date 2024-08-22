@@ -7,7 +7,7 @@ const consultationSchema = new mongoose.Schema({
   time: { type: String, required: true }, // Add a field for time
   motif_consultation: { type: [String], required: true },
   price: { type: Number, required: true },
-  consultation_type: { type: String, enum: ['presential', 'online'], default: 'online' }
+  consultation_type: { type: String, enum: ['présentiel', 'online'], default: 'online' }
 });
 
 const Consultation = mongoose.model('Consultation', consultationSchema);
